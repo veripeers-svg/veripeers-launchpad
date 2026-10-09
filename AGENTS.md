@@ -18,3 +18,4 @@
 - Keep private inquiry reads behind authenticated server functions with a database-backed administrator role check and matching read-only RLS; route gates alone cannot protect personal information.
 - Keep administrator accounts in managed Auth and roles in a separate protected user_roles table; never embed credentials or enable public administrator registration.
 - Use the managed client-only authenticated layout for private administration and one root identity-change subscriber; clear private query caches before sign-out to prevent retained submissions.
+- Export every src asset pointer into its matching static publish path during Netlify builds; external hosts do not provide Lovable's asset-serving middleware, so media must be included in the deployment and failed downloads must fail the build.
