@@ -9,3 +9,4 @@
 - [x] Add private admin login and read-only inquiry list with administrator-only access.
 - [x] Provision the requested administrator account and verify login, data access, and sign-out.
 - [x] Refine welcome animation and phone/tablet layouts; verify navigation, forms, and overflow across screen sizes.
+- [ ] Include logo and photo assets in Netlify deployments; verify exported media and welcome animations.
