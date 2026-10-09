@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import logo from '@/assets/veripeers-logo.png.asset.json';
 
-/** 3-second brand intro. Pure CSS timeline, so it fades out even if scripts fail; JS only unmounts it. */
+/** CSS owns the timeline; remove the overlay only after its fade has finished. */
 export function BrandIntro() {
   const [done, setDone] = useState(false);
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const t = window.setTimeout(() => setDone(true), reduced ? 900 : 3100);
+    const t = window.setTimeout(() => setDone(true), reduced ? 1000 : 3600);
     return () => window.clearTimeout(t);
   }, []);
   if (done) return null;
   return (
-    <div className="brand-intro" aria-hidden="true">
+    <div className="brand-intro" aria-hidden="true" onAnimationEnd={event => {
+      if (event.target === event.currentTarget && event.animationName === 'intro-out') setDone(true);
+    }}>
       <div className="brand-intro-inner">
         <img className="intro-logo" src={logo.url} alt="" />
         <svg className="intro-tick" viewBox="0 0 64 64" fill="none">
