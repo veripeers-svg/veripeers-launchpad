@@ -12,5 +12,6 @@
 ## Website architecture
 - Keep the pre-launch site at the index route and privacy information in a dedicated route, so primary navigation remains section-based.
 - Keep inquiry schemas and launch calculations in browser-safe shared modules, so validation and date rules can be tested without rendering.
-- Until an actual submission service is supplied, forms create validated email drafts and must never claim that leads were saved or sent.
+- Submit validated public inquiries through a POST server function and a write-only RLS-scoped client; never expose submitted personal information to visitors.
+- Owner email notifications require a configured Lovable sender domain and the scaffolded managed email helper; never report notification delivery before that service is wired and checked.
 - Interpret the launch date at midnight in India, and clamp elapsed countdowns at zero to avoid misleading negative timers.
