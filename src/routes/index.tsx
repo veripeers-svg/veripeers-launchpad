@@ -1,24 +1,63 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { ArrowUpRight, ArrowRight, Menu, X, Lightbulb, Users, GraduationCap, Cpu, Sparkles, Layers3, Building2, Network, BookOpen, Sprout, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { InterestForm } from '@/components/interest-forms';
+import { getCountdown } from '@/lib/launch';
+import logo from '@/assets/veripeers-logo.png.asset.json';
+import team from '@/assets/veripeers-team.jpg.asset.json';
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
+export const Route = createFileRoute('/')({
+  head: () => ({ meta: [
+    { title: 'VeriPeers — People Move Potential Forward | Coming October 20' },
+    { name: 'description', content: 'A people-powered entrepreneurial ecosystem for founders, mentors, mentees and technology resources. Join VeriPeers early interest ahead of October 20, 2026.' },
+    { property: 'og:title', content: 'VeriPeers — People Move Potential Forward' },
+    { property: 'og:description', content: 'The next chapter of entrepreneurship. Discover our vision and register your interest before our October 20, 2026 launch.' },
+    { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' },
+  ] }), component: Index,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const navigation = [['Our Vision', 'vision'], ['For Founders', 'founders'], ['For Mentors', 'mentors'], ['AI & Technology Resources', 'technology'], ['Partnerships', 'partnerships']];
+const pillars = [
+  { id: 'founders', icon: Lightbulb, label: 'FOUNDERS', title: 'Build With the Right People.', description: 'Connect with mentors, fellow founders, and entrepreneurial communities to exchange knowledge, explore collaboration, and move your ideas forward.', link: 'Find your people', tone: 'emerald' },
+  { id: 'mentors', icon: Users, label: 'MENTORS & INDUSTRY EXPERTS', title: 'Turn Experience Into Impact.', description: 'Share your expertise, guide aspiring entrepreneurs, and contribute to a stronger ecosystem of builders and innovators.', link: 'Make an impact', tone: 'navy' },
+  { id: 'mentees', icon: GraduationCap, label: 'MENTEES & ASPIRING ENTREPRENEURS', title: 'Learn From Experience.', description: 'Explore practical insights, mentorship, meaningful connections, and opportunities to develop your entrepreneurial ambitions.', link: 'Explore what’s next', tone: 'gold' },
+  { id: 'resources', icon: Cpu, label: 'AI & TECHNOLOGY RESOURCES', title: 'Discover More Than Just a Network.', description: 'We’re working toward helping our community discover useful AI tools, technology resources, company offers, programs, and other opportunities that can support their growth.', link: 'Discover possibilities', tone: 'emerald' },
+];
+function Cta({ children, href = '#early-interest', secondary = false }: { children: React.ReactNode; href?: string; secondary?: boolean }) {
+  return <Button asChild variant={secondary ? 'outline' : 'default'} className="cta"><a href={href}>{children}<ArrowUpRight size={17} /></a></Button>;
+}
+function Countdown() {
+  const [remaining, setRemaining] = useState<ReturnType<typeof getCountdown>>();
+  useEffect(() => { const update = () => setRemaining(getCountdown(Date.now())); update(); const timer = window.setInterval(update, 1000); return () => window.clearInterval(timer); }, []);
+  return <div className="countdown" aria-label="Time until October 20, 2026 launch">{(['days', 'hours', 'minutes', 'seconds'] as const).map((unit, i) => <div className="countdown-unit" key={unit}>{i > 0 && <span className="countdown-colon">:</span>}<strong>{remaining ? String(remaining[unit]).padStart(2, '0') : '—'}</strong><span>{unit.toUpperCase()}</span></div>)}</div>;
+}
+function NetworkVisual() {
+  return <div className="network-visual" aria-label="Founders, mentors and resources connected around people collaborating">
+    <div className="network-grid" />
+    <svg className="connection-lines" viewBox="0 0 520 510" fill="none" aria-hidden="true"><path d="M94 112L257 250L430 117M257 250L450 351M257 250L107 397M257 250L259 461" /><circle cx="257" cy="250" r="178" /><circle cx="257" cy="250" r="230" /></svg>
+    <div className="network-photo"><img src={team.url} alt="Entrepreneurs collaborating around a table" /><div className="photo-caption"><span className="live-dot" /> Built around people. Powered by possibility.</div></div>
+    <div className="network-node node-founder"><span className="node-icon emerald"><Lightbulb size={22} /></span><span>Founders<small>Ideas into action</small></span></div>
+    <div className="network-node node-mentor"><span className="node-icon navy"><Users size={22} /></span><span>Mentors<small>Experience into impact</small></span></div>
+    <div className="network-node node-mentee"><span className="node-icon gold"><GraduationCap size={22} /></span><span>Mentees<small>Ambition into growth</small></span></div>
+    <div className="network-node node-resource"><span className="node-icon emerald"><Sparkles size={22} /></span><span>Resources<small>Access into opportunity</small></span></div>
+    <span className="network-point point-one" /><span className="network-point point-two" /><span className="network-point point-three" />
+    <div className="network-signature"><Network size={16} /> ONE ECOSYSTEM. SHARED POTENTIAL.</div>
+  </div>;
+}
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  const [menu, setMenu] = useState(false);
+  return <>
+    <header className="site-header"><div className="header-inner"><a href="#" aria-label="VeriPeers home" className="brand-logo"><img src={logo.url} alt="VeriPeers — People Move Potential Forward" /></a><nav className="desktop-nav" aria-label="Main navigation">{navigation.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}</nav><div className="header-actions"><Button asChild className="header-cta"><a href="#early-interest">Get Early Access<ArrowUpRight /></a></Button><Button variant="ghost" size="icon" className="menu-toggle" aria-label={menu ? 'Close navigation' : 'Open navigation'} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? <X /> : <Menu />}</Button></div></div>{menu && <nav className="mobile-nav" aria-label="Mobile navigation">{navigation.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>{label}<ArrowUpRight size={16} /></a>)}</nav>}</header>
+    <main>
+      <section className="hero container"><div className="hero-copy"><p className="eyebrow"><span />THE NEXT CHAPTER OF ENTREPRENEURSHIP</p><h1>People Move<br />Potential <span className="headline-accent">Forward<span className="gold-period">.</span></span></h1><h2>Where Founders, Mentors, Mentees<br className="desktop-break" /> & Opportunities Connect.</h2><p className="hero-description">We’re building an ecosystem that brings ambitious founders, experienced mentors, aspiring entrepreneurs, and valuable resources closer together — helping people discover connections and opportunities that move them forward.</p><div className="hero-ctas"><Cta>Join the Early Interest List</Cta><Cta href="#partnerships" secondary>Explore Partnerships</Cta></div><div className="launch-block"><p><span className="launch-dot" />Something meaningful is taking shape.</p><div className="launch-bottom"><span>OFFICIAL WEBSITE LAUNCH<br /><strong>October 20, 2026</strong></span><Countdown /></div></div></div><NetworkVisual /></section>
+      <div className="ecosystem-strip"><div className="container"><span>A PEOPLE-POWERED ECOSYSTEM</span><div><span>Founders</span><i /> <span>Mentors</span><i /><span>Mentees</span><i /><span>Resources</span><i /><span>Opportunities</span></div><Network size={21} /></div></div>
+      <section id="vision" className="section container"><div className="section-heading"><p className="eyebrow">THE VERIPEERS ECOSYSTEM</p><h2>More Than Connections.<br /><span>A World of Possibilities.</span></h2><p>Building something meaningful takes more than an idea. It takes the right people, the right guidance, access to useful resources, and opportunities to grow. VeriPeers is being built to bring these elements closer together.</p></div><div className="pillar-grid">{pillars.map(pillar => <article id={pillar.id} className="pillar" key={pillar.id}><div className={`pillar-icon ${pillar.tone}`}><pillar.icon size={25} strokeWidth={1.6} /></div><p className="pillar-label">{pillar.label}</p><h3>{pillar.title}</h3><p>{pillar.description}</p><a href="#early-interest">{pillar.link}<ArrowUpRight size={17} /></a></article>)}</div></section>
+      <section id="technology" className="technology-section"><div className="container"><div className="technology-heading"><div><p className="eyebrow">TECHNOLOGY THAT MOVES YOU FORWARD</p><h2>Better Connections.<br />Smarter Resources.<br /><span>Greater Possibilities.</span></h2></div><div><p>The right resource at the right time can help an ambitious person move faster. VeriPeers aims to make it easier for founders, mentors, mentees, and entrepreneurial communities to discover relevant AI tools, technology resources, company programs, offers, and support.</p><span className="vision-label"><span className="live-dot" /> PART OF OUR UPCOMING ECOSYSTEM</span></div></div><div className="resource-grid">{[{ icon: Sparkles, title: 'AI & Productivity Tools', text: 'Discover useful technologies that can support research, productivity, experimentation, and building.' }, { icon: Layers3, title: 'Company Offers & Resources', text: 'Explore relevant offers, programs, credits, and resources as they become available through participating companies.' }, { icon: Sprout, title: 'Startup & Ecosystem Support', text: 'Find opportunities to connect with organizations, communities, and resources that support entrepreneurial growth.' }].map((resource, i) => <article className="resource-card" key={resource.title}><div className="resource-top"><resource.icon size={26} strokeWidth={1.5} /><span>0{i + 1}</span></div><h3>{resource.title}</h3><p>{resource.text}</p></article>)}</div><div className="resource-cta"><Cta>Register Your Interest</Cta><p>We’ll share relevant updates as new resources<br /> and opportunities become available.</p></div></div></section>
+      <section id="partnerships" className="partnership-section"><div className="container partnership-layout"><div><p className="eyebrow">FOR ORGANIZATIONS & ECOSYSTEM BUILDERS</p><h2>Let’s Build Something<br /><span>Meaningful Together.</span></h2><p>We’re looking to connect with organizations that want to create more opportunities for founders, students, mentors, and the next generation of entrepreneurs.</p><Cta href="#partnership-inquiry">Explore a Partnership</Cta><p className="small-note">Tell us about your organization and what you would<br /> like to explore with VeriPeers.</p></div><div className="partner-categories">{[{ icon: GraduationCap, title: 'IITs, NITs & universities', subtitle: 'Connecting campus ambition with real-world experience' }, { icon: Lightbulb, title: 'E-Cells & entrepreneurship clubs', subtitle: 'Supporting the next generation of builders' }, { icon: Cpu, title: 'Companies & AI technology providers', subtitle: 'Bringing useful resources closer to the right people' }, { icon: Building2, title: 'Incubators & accelerators', subtitle: 'Helping entrepreneurial potential take its next step' }, { icon: Network, title: 'Founder communities & industry experts', subtitle: 'Creating stronger connections across the ecosystem' }].map(partner => <div key={partner.title}><partner.icon size={23} strokeWidth={1.4} /><div><h3>{partner.title}</h3><p>{partner.subtitle}</p></div><ArrowUpRight size={17} /></div>)}</div></div></section>
+      <section id="early-interest" className="section container form-section"><div><p className="eyebrow">YOUR NEXT CHAPTER STARTS HERE</p><h2>Be Part of<br /><span>What Comes Next.</span></h2><p>VeriPeers is taking shape. Register your interest to receive relevant updates about the community, mentorship, resources, and opportunities as we prepare to launch.</p><div className="form-side-note"><span className="node-icon emerald"><Users size={23} /></span><div>Different journeys. Shared ambition.<small>A place for builders, guides, and the curious.</small></div></div></div><InterestForm /></section>
+      <section id="partnership-inquiry" className="inquiry-section"><div className="container form-section"><div><p className="eyebrow">OPEN TO MEANINGFUL COLLABORATION</p><h2>Let’s Start<br /><span>a Conversation.</span></h2><p>Representing an institution, E-Cell, company, AI technology provider, or entrepreneurial community? We would love to hear what collaboration could look like.</p><a className="contact-link" href="mailto:partnerships@veripeers.com">partnerships@veripeers.com<ArrowUpRight size={16} /></a></div><InterestForm partnership /></div></section>
+      <section className="closing container"><p className="eyebrow">THE FUTURE IS PEOPLE-POWERED</p><h2>Your Next Opportunity<br />Could <span>Start Here.</span></h2><p>Connect with people who inspire you, discover resources that support your ambitions,<br className="desktop-break" /> and be part of an ecosystem designed to move potential forward.</p><div className="hero-ctas"><Cta>Join the Early Interest List</Cta><Cta href="#partnership-inquiry" secondary>Partner With VeriPeers</Cta></div><p className="closing-date"><span className="launch-dot" />OFFICIAL LAUNCH <strong>OCTOBER 20, 2026</strong></p></section>
+    </main>
+    <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><a href="#"><img src={logo.url} alt="VeriPeers official logo" /></a><h3>People Move Potential Forward.</h3><p>A growing entrepreneurial ecosystem connecting people, mentorship, technology resources, and opportunities.</p></div><div><h4>EXPLORE VERIPEERS</h4>{navigation.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}</div><div><h4>LET’S CONNECT</h4><a href="mailto:community@veripeers.com"><small>COMMUNITY</small>community@veripeers.com</a><a href="mailto:hello@veripeers.com"><small>GENERAL INQUIRIES</small>hello@veripeers.com</a><a href="mailto:partnerships@veripeers.com"><small>PARTNERSHIPS</small>partnerships@veripeers.com</a><a href="mailto:privacy@veripeers.com"><small>PRIVACY</small>privacy@veripeers.com</a></div></div><div className="container footer-bottom"><span>© {new Date().getUTCFullYear()} Xplorevo Private Limited. All rights reserved.</span><span>Launching October 20, 2026</span><Link to="/privacy">Privacy Policy<ArrowUpRight size={13} /></Link></div></footer>
+  </>;
 }
