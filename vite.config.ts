@@ -12,4 +12,10 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Server target for builds outside the Lovable sandbox (e.g. Netlify CI):
+  // emit Netlify Functions + static assets. Inside the Lovable sandbox this is
+  // overridden automatically, so the preview keeps working unchanged.
+  nitro: {
+    preset: "netlify",
+  },
 });
