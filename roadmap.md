@@ -8,3 +8,4 @@
 - [x] Update privacy information and verify both submission paths.
 - [x] Add private admin login and read-only inquiry list with administrator-only access.
 - [x] Provision the requested administrator account and verify login, data access, and sign-out.
+- [ ] Refine welcome animation and phone/tablet layouts; verify navigation, forms, and overflow across screen sizes.
