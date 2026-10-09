@@ -8,6 +8,13 @@
       "when": 1791539147772,
       "tag": "0000_create_veripeers_inquiries",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791539611165,
+      "tag": "0001_secure_admin_inquiry_access",
+      "breakpoints": true
     }
   ]
 }

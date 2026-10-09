@@ -6,3 +6,5 @@
 - [x] Replace email drafts with saved submissions and visitor thank-you states.
 - [ ] Notify hello@veripeers.com for registrations and partnership inquiries. Blocked: configure a Lovable email sender domain, then scaffold and wire notifications.
 - [x] Update privacy information and verify both submission paths.
+- [x] Add private admin login and read-only inquiry list with administrator-only access.
+- [x] Provision the requested administrator account and verify login, data access, and sign-out.
