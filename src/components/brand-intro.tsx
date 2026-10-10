@@ -6,7 +6,7 @@ export function BrandIntro() {
   const [done, setDone] = useState(false);
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const t = window.setTimeout(() => setDone(true), reduced ? 1000 : 3600);
+    const t = window.setTimeout(() => setDone(true), reduced ? 1000 : 5600);
     return () => window.clearTimeout(t);
   }, []);
   if (done) return null;
