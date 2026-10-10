@@ -19,3 +19,4 @@
 - Keep administrator accounts in managed Auth and roles in a separate protected user_roles table; never embed credentials or enable public administrator registration.
 - Use the managed client-only authenticated layout for private administration and one root identity-change subscriber; clear private query caches before sign-out to prevent retained submissions.
 - Export every src asset pointer into its matching static publish path during Netlify builds; external hosts do not provide Lovable's asset-serving middleware, so media must be included in the deployment and failed downloads must fail the build.
+- Copy build-inlined public backend values into server env names at the start of each server request; Netlify does not pass netlify.toml build variables to running functions, and the package is marked side-effect-free so the fallback must be an explicit call.
