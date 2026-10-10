@@ -16,7 +16,8 @@ export function applyServerEnvFallback(env: Env, inlined: Env) {
   return env;
 }
 
-if (typeof process !== 'undefined' && process.env) {
+export function ensureServerEnv() {
+  if (typeof process === 'undefined' || !process.env) return;
   applyServerEnvFallback(process.env as Env, {
     VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
     VITE_SUPABASE_PUBLISHABLE_KEY: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
