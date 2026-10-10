@@ -27,6 +27,6 @@
   status = 200
   force = false
 
-# Required environment variables to add in Netlify Site settings → Environment:
-#   VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, VITE_SUPABASE_PROJECT_ID
-# (same values as the project's .env — the site needs them at build time).
+# The public backend values above are declared here so both the build and the
+# Netlify Functions runtime (admin login + submissions) can reach the database.
+# No secret keys are required for this site.
